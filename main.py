@@ -8,3 +8,5 @@ variabel:str="Test"
 print("Detta är en ny rad som Nick skrev")
 
 #Här är en ny rad
+
+print('detta kanske är löst nu?????')
