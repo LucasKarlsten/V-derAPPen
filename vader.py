@@ -1,30 +1,43 @@
 import requests
 
-# Be användaren skriva in en stad
-stad = input("Ange en stad: ")
+class WeatherAPI:
+    def __init__(self, api_key) -> None:
+        self.api_key = api_key
 
-# Din API-nyckel (se till att du använder din egen nyckel här)
-api_key = "17f1f567d5ead14df048349b68629fb4"
+    def get_väder(self, stad):
+        """Hämtar väderdata från OpenWeather API"""
+        url = f"http://api.openweathermap.org/data/2.5/weather?q={stad}&appid={self.api_key}&units=metric"
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"Fel vid API-anrop: {response.status_code}")
+            return None
 
-# Skapa URL med användarens inmatade stad
-url = f"http://api.openweathermap.org/data/2.5/weather?q={stad}&appid={api_key}&units=metric"
+class UserInput:
+    def get_stad():
+        """Hämtar och validerar stadens namn från användaren"""
+        while True:
+            stad = input("Ange en stad: ")
+            if not stad:
+                print ("Stadsnamnet kan inte vara tomt")
+            elif " " in stad or stad.isalpha():
+                return stad
+            else:
+                print("Stadsnamnet får inte innehålla nummer eller tecken")
+                
+class WeatherApp:
+    def skriv_ut_väder(data, stad):
+        """Returnerar väderinformationen för den angivna staden som en sträng."""
+        temperatur = data['main']['temp']
+        luftfuktighet = data['main']['humidity']
+        väderförhållanden = data['weather'][0]['description']
 
-# Gör en förfrågan till API:et
-response = requests.get(url)
+        väderinfo = (
+            f"\nVädret i {stad.capitalize()}:\n"
+            f"Temperatur: {temperatur}°C\n"
+            f"Luftfuktighet: {luftfuktighet}%\n"
+            f"Väderförhållanden: {väderförhållanden}\n"
+        )
 
-# Kontrollera om anropet var framgångsrikt (statuskod 200)
-if response.status_code == 200:
-    data = response.json()
-    
-    # Hämta specifika väderdata
-    temperatur = data['main']['temp']
-    luftfuktighet = data['main']['humidity']
-    vederforhallanden = data['weather'][0]['description']
-    
-    # Skriv ut väderinformationen
-    print(f"Vädret i {stad.capitalize()}:")
-    print(f"Temperatur: {temperatur}°C")
-    print(f"Luftfuktighet: {luftfuktighet}%")
-    print(f"Väderförhållanden: {vederforhallanden}")
-else:
-    print("Fel:", response.status_code)
+        return väderinfo
