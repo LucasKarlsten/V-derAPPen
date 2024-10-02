@@ -1,5 +1,5 @@
 ﻿# V-derAPPen
-
+Grupp 6 Lucas, Johan, Johan, Claire, Omar, Nick.
 
 ---
 
